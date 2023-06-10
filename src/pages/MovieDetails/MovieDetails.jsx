@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import fetchMovies from 'service/api-themoviedb';
+import {fetchMovies} from 'service/api-themoviedb';
 import { Spinner } from 'components/Spinner/Spinner';
 import { CardMovie } from 'components/CardMovie/CardMovie';
 import { AdditionalInfo } from 'components/AdditionalInfo/AdditionalInfo';
@@ -8,25 +8,29 @@ import { AdditionalInfo } from 'components/AdditionalInfo/AdditionalInfo';
 function MovieDetails() {
   const [infoMovie, setInfoMovie] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {moviesId} = useParams();
-
+  const { moviesId } = useParams();
   const request = `movie/${moviesId}`;
+
   useEffect(() => {
-    setIsLoading(true);
-    fetchMovies(request)
-      .then(movies => {
-        setInfoMovie(movies.data)
-      })
-      .catch(error => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const movies = await fetchMovies(request);
+        setInfoMovie(movies);
+      } catch (error) {
         console.log(error.message);
-      })
-      .finally(() => setIsLoading(false));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [request]);
 
   return (
     <>
       {isLoading && <Spinner />}
-      <CardMovie card={infoMovie}/>
+      <CardMovie card={infoMovie} />
       <AdditionalInfo />
     </>
   );
