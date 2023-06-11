@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom"
-export function AdditionalInfo( {moviesId} ){
+import { Link, useParams } from "react-router-dom"
+export function AdditionalInfo(){
+  const { moviesId } = useParams();
   return (
     <>
     <h3>Additional information</h3>

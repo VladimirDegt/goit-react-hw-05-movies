@@ -11,10 +11,20 @@ export function CardMovie({ card }) {
   return (
     infoMovie && (
       <StyledInfoSection>
-        <img
-          src={`https://image.tmdb.org/t/p/w500${infoMovie.poster_path}`}
-          alt={`${infoMovie.title || infoMovie.name}`}
-        />
+        {infoMovie.poster_path ? (
+          <img
+            src={`https://image.tmdb.org/t/p/w500${infoMovie.poster_path}`}
+            alt={`${infoMovie.title || infoMovie.name}`}
+            width="300"
+          />
+        ) : (
+          <img
+            src={`http://dummyimage.com/300x450/99cccc.jpg&text=No+photo`}
+            alt={`${infoMovie.title || infoMovie.name}`}
+            width="300"
+          />
+        )}
+
         <div>
           <h1>{infoMovie.title || infoMovie.name}</h1>
           <p>vote_average: {infoMovie.vote_average}</p>

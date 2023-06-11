@@ -10,19 +10,27 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const movies = await fetchMovies(request);
+        const movies = await fetchMovies(request, abortController.signal);
         setTrendingMovies(movies.results);
       } catch (error) {
-        console.log(error.message);
-      } finally {
+        if(error.code !== 'ERR_CANCELED') {
+          console.log(error.message); 
+        }
+      }
+        finally {
         setIsLoading(false);
       }
     };
   
     fetchData();
+    return () => {
+      abortController.abort(); 
+    };
   }, []);
 
   return (

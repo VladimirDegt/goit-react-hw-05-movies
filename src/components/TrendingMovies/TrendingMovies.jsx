@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 function TrendingMovies({ trendingMovies }) {
   return (
-    <ul>
+    <ol>
       {trendingMovies &&
         trendingMovies.map(item => {
           return (
@@ -10,7 +10,7 @@ function TrendingMovies({ trendingMovies }) {
             </Link>
           );
         })}
-    </ul>
+    </ol>
   );
 }
 

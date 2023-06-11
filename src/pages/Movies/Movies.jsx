@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { SearchMovie } from "components/SearchMovie/SearchMovie";
-import { ListMovie } from "components/ListMovie/ListMovie";
-import {fetchMovies} from "service/api-themoviedb";
-import { Spinner } from "components/Spinner/Spinner";
+import { useEffect, useState } from 'react';
+import { SearchMovie } from 'components/SearchMovie/SearchMovie';
+import { ListMovie } from 'components/ListMovie/ListMovie';
+import { fetchMovies } from 'service/api-themoviedb';
+import { Spinner } from 'components/Spinner/Spinner';
+
 
 function Movies() {
   const [movie, setMovie] = useState('');
@@ -12,34 +12,39 @@ function Movies() {
   const request = `search/movie`;
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const movies = await fetchMovies(request, movie);
+        const movies = await fetchMovies(request, abortController.signal, movie);
         setMatchMovie(movies.results);
       } catch (error) {
-        console.log(error.message);
+        if(error.code !== 'ERR_CANCELED') {
+          console.log(error.message); 
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
+    return () => {
+      abortController.abort(); 
+    };
   }, [request, movie]);
 
-  function addMovie(name){
-    setMovie(name)
-  };
+  function addMovie(name) {
+    setMovie(name);
+  }
 
   return (
     <>
-      <SearchMovie addMovie={addMovie}/>
+      <SearchMovie addMovie={addMovie} />
       {isLoading && <Spinner />}
-      <Link to={`/movies?query=${movie}`}>
-        <ListMovie movies={matchMovie}/>
-      </Link>
+      <ListMovie movies={matchMovie} />
     </>
   );
-};
+}
 
 export default Movies;

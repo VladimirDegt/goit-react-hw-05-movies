@@ -9,7 +9,7 @@ export function ListMovie({ movies }) {
   }, [movies]);
 
   return (
-    <ul>
+    <ol>
       {visibleMovie &&
         visibleMovie.map(item => {
           return (
@@ -18,6 +18,6 @@ export function ListMovie({ movies }) {
             </Link>
           );
         })}
-    </ul>
+    </ol>
   );
 }
