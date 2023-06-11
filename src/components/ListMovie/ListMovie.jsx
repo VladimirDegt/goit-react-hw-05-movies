@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export function ListMovie({ movies }) {
   const [visibleMovie, setVisibleMovie] = useState('');
 
-  useEffect(()=>{
-    setVisibleMovie(movies)
-  },[movies])
+  useEffect(() => {
+    setVisibleMovie(movies);
+  }, [movies]);
 
-  return visibleMovie && 
-  <ul>
-    {visibleMovie.map((item)=><li key={item.id}>{item.title}</li>)}
-  </ul>
-};
+  return (
+    <ul>
+      {visibleMovie &&
+        visibleMovie.map(item => {
+          return (
+            <Link key={item.id} to={`/movies/${item.id}`}>
+              <li>{item.title}</li>
+            </Link>
+          );
+        })}
+    </ul>
+  );
+}

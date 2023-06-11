@@ -31,7 +31,7 @@ function MovieDetails() {
     <>
       {isLoading && <Spinner />}
       <CardMovie card={infoMovie} />
-      <AdditionalInfo />
+      <AdditionalInfo moviesId={moviesId}/>
     </>
   );
 }
