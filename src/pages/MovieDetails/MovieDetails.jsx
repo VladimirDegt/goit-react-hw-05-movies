@@ -1,26 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useParams, useNavigate  } from 'react-router-dom';
 import { fetchMovies } from 'service/api-themoviedb';
-import { Spinner } from 'components/Spinner/Spinner';
 import { CardMovie } from 'components/CardMovie/CardMovie';
 import { AdditionalInfo } from 'components/AdditionalInfo/AdditionalInfo';
+import {MovieSceleton} from 'components/sceletons/MovieSceleton/MovieSkeleton';
 
 function MovieDetails() {
   const [infoMovie, setInfoMovie] = useState('');
   const [isErrorFetch, setIsErrorFetch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [fromPage, setFromPage] = useState('');
   const { moviesId } = useParams();
   const request = `movie/${moviesId}`;
 
-  const location = useLocation();
-  const paramValue = location.state.param;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const abortController = new AbortController();
 
-    setFromPage(paramValue)
-    
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -40,14 +36,13 @@ function MovieDetails() {
     fetchData();
     return () => {
       abortController.abort();
-      setFromPage('');
     };
-  }, [request, paramValue]);
+  }, [request]);
 
   return (
     <>
-      {isLoading && <Spinner />}
-      <Link to={`${fromPage}`}><button> Go back</button></Link>
+      {isLoading && <MovieSceleton />}
+      <button onClick={() => navigate(-1)}>Go back</button>
       {isErrorFetch && <h3>Детальна інформація по фільму не знайдена</h3>}
       <CardMovie card={infoMovie} />
       {infoMovie &&  <AdditionalInfo/>}

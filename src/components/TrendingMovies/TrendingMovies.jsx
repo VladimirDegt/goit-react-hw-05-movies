@@ -1,19 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-function TrendingMovies({ trendingMovies }) {
-  const navigate = useNavigate();
+import { Link } from 'react-router-dom';
+import { StyledItemList } from './TrendingMovies.styled';
 
-  const handleClick = (id) => {
-    navigate(`/movies/${id}`, { state: { param: '/' } });
-  };
+function TrendingMovies({ trendingMovies }) {
 
   return (
     <ol>
       {trendingMovies &&
         trendingMovies.map(item => {
           return (            
-            <li key={item.id} onClick={() => handleClick(item.id)}>
-              {item.title || item.name}
-            </li>
+            <Link to={`/movies/${item.id}`} key={item.id}>
+              <StyledItemList >{item.title || item.name}</StyledItemList>
+            </Link>
           );
         })}
     </ol>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {fetchMovies} from 'service/api-themoviedb';
 import TrendingMovies from 'components/TrendingMovies/TrendingMovies';
-import { Spinner } from 'components/Spinner/Spinner';
+import MovieTopList from 'components/sceletons/HomeSkeleton/HomeSkeleton';
 
 const request = 'trending/all/day';
 
@@ -36,7 +36,7 @@ function Home() {
   return (
     <>
       <h1>Trending today</h1>
-      {isLoading && <Spinner />}
+      {isLoading && <MovieTopList />}
       <TrendingMovies trendingMovies={trendingMovies} />
     </>
   );
