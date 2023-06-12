@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
 export const StyledItemList = styled.li`
   color: #3f51b5;
@@ -9,4 +10,7 @@ export const StyledItemList = styled.li`
   :focus {
     color: black;
   }
+`
+export const StyledLink = styled(Link)`
+  text-decoration: none;
 `

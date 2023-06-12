@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { StyledItemList } from './ListMovie.styled';
+import { StyledItemList, StyledLink } from './ListMovie.styled';
 
 export function ListMovie({ movies }) {
   const [visibleMovie, setVisibleMovie] = useState('');
@@ -14,9 +13,9 @@ export function ListMovie({ movies }) {
       {visibleMovie &&
         visibleMovie.map(item => {
           return (
-            <Link key={item.id} to={`/movies/${item.id}`}>
+            <StyledLink key={item.id} to={`/movies/${item.id}`}>
               <StyledItemList>{item.title}</StyledItemList>
-            </Link>
+            </StyledLink>
           );
         })}
     </ol>

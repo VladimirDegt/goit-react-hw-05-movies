@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { SearchMovie } from 'components/SearchMovie/SearchMovie';
 import { ListMovie } from 'components/ListMovie/ListMovie';
 import { fetchMovies } from 'service/api-themoviedb';
-import { Spinner } from 'components/Spinner/Spinner';
+import MovieTopList from 'components/sceletons/HomeSkeleton/HomeSkeleton';
 
 
 function Movies() {
@@ -41,7 +41,7 @@ function Movies() {
   return (
     <>
       <SearchMovie addMovie={addMovie} />
-      {isLoading && <Spinner />}
+      {isLoading && <MovieTopList />}
       <ListMovie movies={matchMovie} />
     </>
   );
