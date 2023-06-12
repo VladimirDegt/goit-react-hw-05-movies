@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Outlet, useParams, useNavigate  } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Outlet, useParams, Link, useLocation  } from 'react-router-dom';
 import { fetchMovies } from 'service/api-themoviedb';
 import { CardMovie } from 'components/CardMovie/CardMovie';
 import { AdditionalInfo } from 'components/AdditionalInfo/AdditionalInfo';
@@ -11,8 +11,8 @@ function MovieDetails() {
   const [isLoading, setIsLoading] = useState(false);
   const { moviesId } = useParams();
   const request = `movie/${moviesId}`;
-
-  const navigate = useNavigate();
+  const location = useLocation();
+  const backLinkLocationRef = useRef(location.state?.from ?? '/');
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -42,7 +42,7 @@ function MovieDetails() {
   return (
     <>
       {isLoading && <MovieSceleton />}
-      <button onClick={() => navigate(-1)}>Go back</button>
+      <Link to={backLinkLocationRef.current}>Go back</Link>
       {isErrorFetch && <h3>Детальна інформація по фільму не знайдена</h3>}
       <CardMovie card={infoMovie} />
       {infoMovie &&  <AdditionalInfo/>}

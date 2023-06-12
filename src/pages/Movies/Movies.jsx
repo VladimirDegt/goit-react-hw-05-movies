@@ -3,13 +3,15 @@ import { SearchMovie } from 'components/SearchMovie/SearchMovie';
 import { ListMovie } from 'components/ListMovie/ListMovie';
 import { fetchMovies } from 'service/api-themoviedb';
 import MovieTopList from 'components/sceletons/HomeSkeleton/HomeSkeleton';
-
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 function Movies() {
   const [movie, setMovie] = useState('');
   const [matchMovie, setMatchMovie] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const request = `search/movie`;
+  const location = useLocation();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -32,17 +34,19 @@ function Movies() {
     return () => {
       abortController.abort(); 
     };
-  }, [request, movie]);
+  }, [request, movie, searchParams]);
 
   function addMovie(name) {
     setMovie(name);
+    setSearchParams({query: name})
   }
 
   return (
     <>
       <SearchMovie addMovie={addMovie} />
+      {movie && matchMovie.length === 0 && <h3>По Вашему запиту нічого не знайдено</h3>}
       {isLoading && <MovieTopList />}
-      <ListMovie movies={matchMovie} />
+      <ListMovie movies={matchMovie} location={location} />
     </>
   );
 }

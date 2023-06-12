@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import {fetchMovies} from 'service/api-themoviedb';
+import { fetchMovies } from 'service/api-themoviedb';
 import TrendingMovies from 'components/TrendingMovies/TrendingMovies';
 import MovieTopList from 'components/sceletons/HomeSkeleton/HomeSkeleton';
+import { useLocation } from 'react-router-dom';
 
 const request = 'trending/all/day';
 
 function Home() {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -18,18 +20,17 @@ function Home() {
         const movies = await fetchMovies(request, abortController.signal);
         setTrendingMovies(movies.results);
       } catch (error) {
-        if(error.code !== 'ERR_CANCELED') {
-          console.log(error.message); 
+        if (error.code !== 'ERR_CANCELED') {
+          console.log(error.message);
         }
-      }
-        finally {
+      } finally {
         setIsLoading(false);
       }
     };
-  
+
     fetchData();
     return () => {
-      abortController.abort(); 
+      abortController.abort();
     };
   }, []);
 
@@ -37,7 +38,7 @@ function Home() {
     <>
       <h1>Trending today</h1>
       {isLoading && <MovieTopList />}
-      <TrendingMovies trendingMovies={trendingMovies} />
+      <TrendingMovies trendingMovies={trendingMovies} location={location} />
     </>
   );
 }

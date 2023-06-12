@@ -1,13 +1,12 @@
 import { StyledItemList, StyledLink } from './TrendingMovies.styled';
 
-function TrendingMovies({ trendingMovies }) {
-
+function TrendingMovies({ trendingMovies, location }) {
   return (
     <ol>
       {trendingMovies &&
         trendingMovies.map(item => {
           return (            
-            <StyledLink to={`/movies/${item.id}`} key={item.id}>
+            <StyledLink to={`/movies/${item.id}`} state={{from:location}} key={item.id}>
               <StyledItemList >{item.title || item.name}</StyledItemList>
             </StyledLink>
           );
