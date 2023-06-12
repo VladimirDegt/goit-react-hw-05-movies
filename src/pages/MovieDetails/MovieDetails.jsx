@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { fetchMovies } from 'service/api-themoviedb';
 import { Spinner } from 'components/Spinner/Spinner';
 import { CardMovie } from 'components/CardMovie/CardMovie';
@@ -9,12 +9,18 @@ function MovieDetails() {
   const [infoMovie, setInfoMovie] = useState('');
   const [isErrorFetch, setIsErrorFetch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [fromPage, setFromPage] = useState('');
   const { moviesId } = useParams();
   const request = `movie/${moviesId}`;
+
+  const location = useLocation();
+  const paramValue = location.state.param;
 
   useEffect(() => {
     const abortController = new AbortController();
 
+    setFromPage(paramValue)
+    
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -33,14 +39,15 @@ function MovieDetails() {
 
     fetchData();
     return () => {
-      abortController.abort(); 
+      abortController.abort();
+      setFromPage('');
     };
-  }, [request]);
+  }, [request, paramValue]);
 
   return (
     <>
       {isLoading && <Spinner />}
-      <button> Go back</button>
+      <Link to={`${fromPage}`}><button> Go back</button></Link>
       {isErrorFetch && <h3>Детальна інформація по фільму не знайдена</h3>}
       <CardMovie card={infoMovie} />
       {infoMovie &&  <AdditionalInfo/>}

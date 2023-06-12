@@ -1,21 +1,26 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export function ListMovie({ movies }) {
   const [visibleMovie, setVisibleMovie] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     setVisibleMovie(movies);
   }, [movies]);
+
+  const handleClick = (id) => {
+    navigate(`/movies/${id}`, { state: { param: '/movies' } });
+  };
 
   return (
     <ol>
       {visibleMovie &&
         visibleMovie.map(item => {
           return (
-            <Link key={item.id} to={`/movies/${item.id}`}>
-              <li>{item.title}</li>
-            </Link>
+            <li key={item.id} onClick={() => handleClick(item.id)}>
+              {item.title || item.name}
+            </li>
           );
         })}
     </ol>
