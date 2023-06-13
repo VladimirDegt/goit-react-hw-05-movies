@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { fetchMovies } from 'service/api-themoviedb';
 import { Spinner } from 'components/Spinner/Spinner';
 
-export function Cast() {
+function Cast() {
   const [castList, setCastList] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { moviesId } = useParams();
@@ -64,3 +64,5 @@ export function Cast() {
     </>
   );
 };
+
+export default Cast;

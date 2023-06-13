@@ -9,6 +9,7 @@ function Movies() {
   const [movie, setMovie] = useState('');
   const [matchMovie, setMatchMovie] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const request = `search/movie`;
   const location = useLocation();
@@ -21,6 +22,9 @@ function Movies() {
       try {
         const movies = await fetchMovies(request, abortController.signal, movie);
         setMatchMovie(movies.results);
+        if(movie && movies.results.length === 0){
+          setIsVisible(true);
+        }
       } catch (error) {
         if(error.code !== 'ERR_CANCELED') {
           console.log(error.message); 
@@ -44,9 +48,9 @@ function Movies() {
   return (
     <>
       <SearchMovie addMovie={addMovie} />
-      {movie && matchMovie.length === 0 && <h3>По Вашему запиту нічого не знайдено</h3>}
       {isLoading && <MovieTopList />}
       <ListMovie movies={matchMovie} location={location} />
+      {isVisible && <h3>По Вашему запиту нічого не знайдено</h3>}
     </>
   );
 }

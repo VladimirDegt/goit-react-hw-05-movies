@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { fetchMovies } from 'service/api-themoviedb';
 import { Spinner } from 'components/Spinner/Spinner';
 
-export function Reviews() {
+function Reviews() {
   const [review, setReview] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { moviesId } = useParams();
@@ -50,3 +50,5 @@ export function Reviews() {
     </>
   );
 }
+
+export default Reviews;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { Outlet, useParams, Link, useLocation  } from 'react-router-dom';
 import { fetchMovies } from 'service/api-themoviedb';
 import { CardMovie } from 'components/CardMovie/CardMovie';
@@ -46,7 +46,12 @@ function MovieDetails() {
       {isErrorFetch && <h3>Детальна інформація по фільму не знайдена</h3>}
       <CardMovie card={infoMovie} />
       {infoMovie &&  <AdditionalInfo/>}
-      {infoMovie &&  <Outlet />}
+      {infoMovie &&  
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
+      
+      }
     </>
   );
 }
