@@ -6,13 +6,21 @@ import MovieTopList from 'components/sceletons/HomeSkeleton/HomeSkeleton';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
 function Movies() {
-  const [movie, setMovie] = useState('');
   const [matchMovie, setMatchMovie] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState('');
   const request = `search/movie`;
   const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const queryParam = searchParams.get('query');
+    if (queryParam) {
+      setQuery(queryParam);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -20,9 +28,9 @@ function Movies() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const movies = await fetchMovies(request, abortController.signal, movie);
+        const movies = await fetchMovies(request, abortController.signal, query);
         setMatchMovie(movies.results);
-        if(movie && movies.results.length === 0){
+        if(query && movies.results.length === 0){
           setIsVisible(true);
         }
       } catch (error) {
@@ -38,10 +46,9 @@ function Movies() {
     return () => {
       abortController.abort(); 
     };
-  }, [request, movie, searchParams]);
+  }, [request, searchParams, query]);
 
   function addMovie(name) {
-    setMovie(name);
     setSearchParams({query: name})
   }
 

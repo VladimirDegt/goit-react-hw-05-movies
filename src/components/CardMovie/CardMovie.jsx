@@ -39,4 +39,4 @@ export function CardMovie({ card }) {
       </StyledInfoSection>
     )
   );
-}
+};
